@@ -61,13 +61,14 @@ const Styles = () => (
       animation: gradientAnimation 20s ease infinite;
       min-height: 100vh;
       width: 100%;
+      padding: 8rem 0; /* Espaçamento reajustado para um visual mais equilibrado */
+      box-sizing: border-box;
       display: flex;
       align-items: center;
-      justify-content: center;
     }
 
     /* --- Layout e Contêineres --- */
-    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
     
     /* --- Card de Contato --- */
     .contact-card {
@@ -176,13 +177,8 @@ export default function ContactPage() {
         // Simulação de envio
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-        // Simulação de sucesso
         setStatus('success');
 
-        // Exemplo de como seria um erro
-        // setStatus('error');
-
-        // Resetar o status após um tempo
         setTimeout(() => setStatus('idle'), 4000);
     };
 
@@ -234,4 +230,5 @@ export default function ContactPage() {
         </>
     );
 }
+
 

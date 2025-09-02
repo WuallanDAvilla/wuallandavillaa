@@ -73,8 +73,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
     );
 };
 
-// Componente "Skeleton" para simular o carregamento
-const ProjectCardSkeleton = () => (
+const ProjectCardSkeleton: React.FC = () => (
     <div className="project-card-skeleton">
         <div className="skeleton-image"></div>
         <div className="skeleton-content">
@@ -122,9 +121,7 @@ const Styles = () => (
 
     /* --- Animação de Fundo --- */
     @keyframes gradientAnimation {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
     }
     .cosmic-background {
       background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), #020024, var(--bg-primary));
@@ -132,14 +129,16 @@ const Styles = () => (
       animation: gradientAnimation 20s ease infinite;
       min-height: 100vh;
       width: 100%;
+      padding: 2rem 0; /* Espaçamento drasticamente reduzido */
+      box-sizing: border-box;
     }
 
     /* --- Layout e Contêineres --- */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
-    .page-section { padding: 6rem 0; position: relative; }
+    .page-section { padding: 0; position: relative; } /* Padding zerado pois o pai controla */
 
     /* --- Tipografia e Cabeçalhos --- */
-    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-header { text-align: center; margin-bottom: 2rem; }
     .section-pre-title { color: var(--accent-sky-light); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.9rem; }
     .section-title { font-size: 3rem; font-weight: 800; color: var(--text-white); margin-top: 0.25rem; }
 
@@ -153,7 +152,7 @@ const Styles = () => (
     @media (min-width: 992px) { .lg-grid-cols-3 { grid-template-columns: repeat(3, 1fr); } }
     
     /* --- Seção de Projetos --- */
-    .filter-buttons { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .filter-buttons { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
     .filter-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 0.5rem 1.5rem; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; font-weight: 500; }
     .filter-btn:hover { background-color: var(--glass-bg); color: var(--text-white); }
     .filter-btn.active { background: var(--accent-sky); color: var(--bg-primary); border-color: var(--accent-sky); }
@@ -176,7 +175,6 @@ const Styles = () => (
     .skeleton-line { height: 1rem; background-color: var(--skeleton-bg); border-radius: 0.25rem; margin-bottom: 0.75rem; }
     .skeleton-line.title { height: 1.5rem; width: 75%; margin-bottom: 1rem; }
     .skeleton-line.short { width: 60%; }
-
 
     /* --- Estilos do Modal --- */
     .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 0, 20, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
@@ -220,7 +218,7 @@ const allProjects: Project[] = [
 
 export default function ProjectsPage() {
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-    const [activeFilter, setActiveFilter] = useState('all');
+    const [activeFilter, setActiveFilter] = useState<string>('all');
     const [isLoading, setIsLoading] = useState(true);
 
     // Simula o carregamento dos dados
@@ -242,7 +240,7 @@ export default function ProjectsPage() {
                         <div className="container">
                             <motion.div initial="hidden" animate="visible" variants={staggerContainer(0.1)}>
                                 <motion.div variants={fadeIn('down', 0.1)} className="section-header">
-                                    <p className="section-pre-title">Meu Portfólio</p>
+                                    <p className="section-pre-title">Meu PortfólIO</p>
                                     <h2 className="section-title">Projetos Recentes.</h2>
                                 </motion.div>
 
@@ -296,4 +294,5 @@ export default function ProjectsPage() {
         </>
     );
 }
+
 

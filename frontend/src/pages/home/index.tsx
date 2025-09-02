@@ -1,105 +1,82 @@
+import React from 'react';
 import { motion, type Variants } from 'framer-motion';
 
-// Componente para a animação visual da seção Home
+// --- Ícones (Otimizados como componentes SVG) ---
+
+const WebDevIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon"><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></svg>);
+const MobileIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></svg>);
+const AutomationIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon"><path d="M12 8V4H8" /><path d="M16.29 17.8L19 15l-2.71-2.8" /><path d="m16.29 17.8 2.71 2.8-2.71 2.8" /><path d="M10.76 9.54 15 5l-4.24-4.54" /><path d="M16 8h-4v4h4" /><path d="m5 19 3-3-3-3" /><path d="M5.29 17.8H2" /><path d="M8 12H4v4h4" /></svg>);
+const techIcons = {
+    HTML5: () => <svg fill="#E34F26" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622-13.388-.002.607 6.952h11.1l-.33 3.572-3.301 1.005-3.376-1.004-.209-2.285H5.82l.33 4.171L12 19.351l5.871-1.648.808-8.953H8.531z" /></svg>,
+    CSS3: () => <svg fill="#1572B6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718h10.059l.23-2.622H5.456l.607 6.952h11.1l-.33 3.572-3.301 1.005-3.376-1.004-.209-2.285H5.82l.33 4.171L12 19.351l5.871-1.648.808-8.953H8.531z" /></svg>,
+    JavaScript: () => <svg fill="#F7DF1E" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0V0zm22.05 19.913c.22-.439.109-.989-.262-1.359L16.2 12l5.588-6.554c.37-.439.481-.989.262-1.428-.22-.439-.681-.678-1.159-.568L2 8.949v6.103l18.891 5.43c.478.109 1.028-.02 1.159-.569zm-7.95-6.554l-5.588-3.264v6.528l5.588-3.264z" /></svg>,
+    TypeScript: () => <svg fill="#3178C6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.05 19.913c.22-.439.109-.989-.262-1.359L16.2 12l5.588-6.554c.37-.439.481-.989.262-1.428-.22-.439-.681-.678-1.159-.568L2 8.949v6.103l18.891 5.43c.478.109 1.028-.02 1.159-.569zm-7.95-6.554l-5.588-3.264v6.528l5.588-3.264z" /></svg>,
+    React: () => <svg fill="#61DAFB" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm-4.004-8a4 4 0 1 1 8 0 4 4 0 0 1-8 0zm4-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" /></svg>,
+    TailwindCSS: () => <svg fill="#06B6D4" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z M8 11h8v2H8v-2z" /></svg>,
+    'Node.js': () => <svg fill="#339933" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 24C5.38 24 0 18.62 0 12S5.38 0 11.99 0C18.6 0 24 5.38 24 12s-5.4 12-12.01 12zm-.11-2.31c4.27 0 7.75-3.48 7.75-7.75S16.15 6.2 11.88 6.2c-4.27 0-7.75 3.48-7.75 7.75s3.48 7.74 7.75 7.74z" /></svg>,
+    Python: () => <svg fill="#3776AB" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12c0-6.627-5.373-12-12-12S0 5.373 0 12s5.373 12 12 12 12-5.373 12-12zM8.03 8.03c.52 0 .97.23 1.29.6l1.09-1.09c-.58-.58-1.35-.91-2.18-.91-1.71 0-3.1 1.38-3.1 3.1s1.38 3.1 3.1 3.1c.83 0 1.6-.33 2.18-.91l-1.09-1.09c-.32.37-.77.6-1.29.6-1.01 0-1.83-.82-1.83-1.83s.82-1.83 1.83-1.83zm7.94 7.94c-.52 0-.97-.23-1.29-.6l-1.09 1.09c.58.58 1.35.91 2.18.91 1.71 0 3.1-1.38 3.1-3.1s-1.38-3.1-3.1-3.1c-.83 0-1.6.33-2.18.91l1.09 1.09c.32-.37.77-.6 1.29-.6 1.01 0 1.83.82 1.83 1.83s-.82 1.83-1.83 1.83z" /></svg>,
+    'n8n.io': () => <svg fill="#1AF192" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 21.6c-5.302 0-9.6-4.298-9.6-9.6S6.698 2.4 12 2.4s9.6 4.298 9.6 9.6-4.298 9.6-9.6 9.6zM12 6v12h-2V6h2zm4 0v12h-2V6h2z" /></svg>,
+    OpenAI: () => <svg fill="#412991" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.82 7.182c-1.636-1.636-3.818-2.682-6.182-2.682s-4.545 1.045-6.182 2.682C6.822 8.818 5.777 11 5.777 13.364s1.045 4.545 2.682 6.182c1.636 1.636 3.818 2.682 6.182 2.682s4.545-1.045 6.182-2.682c1.636-1.636 2.682-3.818 2.682-6.182s-1.045-4.545-2.682-6.182zm-1.818 10.545c-1.227 1.227-2.864 2-4.636 2s-3.409-.773-4.636-2c-1.227-1.227-2-2.864-2-4.636s.773-3.409 2-4.636c1.227-1.227 2.864-2 4.636-2s3.409.773 4.636 2c1.227 1.227 2 2.864 2 4.636s-.773 3.409-2 4.636z" /></svg>,
+    Firebase: () => <svg fill="#FFCA28" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" /></svg>,
+    'VS Code': () => <svg fill="#007ACC" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.1 11.12l-8.23-8.23-1.06 1.06 7.17 7.17-7.17 7.17 1.06 1.06 8.23-8.23c.3-.3.3-.78 0-1.06zM1.96 12.88l8.23 8.23 1.06-1.06-7.17-7.17 7.17-7.17-1.06-1.06-8.23 8.23c-.3.3-.3.78 0 1.06z" /></svg>,
+};
+
+// --- Componente de Animação Otimizado ---
 const HeroVisual = () => (
-    <div className="hero-visual-container">
-        <div className="rotating-globe">
-            <div className="globe-surface"></div>
-            <div className="globe-ring ring-1"></div>
-            <div className="globe-ring ring-2"></div>
-            <div className="globe-ring ring-3"></div>
-            <div className="globe-sparkle sparkle-1"></div>
-            <div className="globe-sparkle sparkle-2"></div>
-            <div className="globe-sparkle sparkle-3"></div>
-            <div className="globe-sparkle sparkle-4"></div>
-        </div>
+    <div className="hero-visual-container-opt">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: 'var(--accent-sky-light)', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: 'var(--accent-sky)', stopOpacity: 1 }} />
+                </linearGradient>
+            </defs>
+            <g className="floating-group">
+                <circle cx="200" cy="200" r="100" fill="var(--glass-bg)" stroke="url(#glowGradient)" strokeWidth="1" />
+                <circle cx="200" cy="200" r="150" fill="none" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="5 5" />
+                <path d="M 50 200 A 150 150 0 0 1 350 200" fill="none" stroke="var(--accent-sky)" strokeWidth="0.7" />
+                <path d="M 50 200 A 150 150 0 0 0 350 200" fill="none" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="2 3" />
+            </g>
+        </svg>
     </div>
 );
 
-
-// Componente para injetar os estilos CSS diretamente no DOM
+// --- Componente de Estilos ---
 const Styles = () => (
     <style>{`
-    /* --- Fontes e Variáveis Globais --- */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
     :root {
-      --bg-primary: #030014;
-      --bg-secondary: #050816;
-      --bg-card: rgba(10, 8, 28, 0.5);
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --text-primary: #e5e7eb;
-      --text-secondary: #aaa6c3;
-      --text-white: #ffffff;
-      --accent-sky: #38bdf8;
-      --accent-sky-light: #7dd3fc;
-      --border-color: rgba(56, 189, 248, 0.15);
-      --glow-color: rgba(56, 189, 248, 0.3);
+      --bg-primary: #030014; --bg-secondary: #050816; --bg-card: rgba(10, 8, 28, 0.5);
+      --glass-bg: rgba(255, 255, 255, 0.05); --text-primary: #e5e7eb; --text-secondary: #aaa6c3;
+      --text-white: #ffffff; --accent-sky: #38bdf8; --accent-sky-light: #7dd3fc;
+      --border-color: rgba(56, 189, 248, 0.15); --glow-color: rgba(56, 189, 248, 0.3);
     }
-
-    /* --- Estilos Base --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      line-height: 1.7;
-      color: var(--text-primary);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
-    }
-
-    /* --- Animação de Fundo --- */
-    @keyframes gradientAnimation {
-      0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-    }
-    .cosmic-background {
-      background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), #020024, var(--bg-primary));
-      background-size: 400% 400%;
-      animation: gradientAnimation 20s ease infinite;
-    }
-
-    /* --- Layout e Contêineres --- */
+    body { font-family: 'Poppins', sans-serif; line-height: 1.7; color: var(--text-primary); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; }
+    @keyframes gradientAnimation { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .cosmic-background { background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), #020024, var(--bg-primary)); background-size: 400% 400%; animation: gradientAnimation 20s ease infinite; }
     .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
-    .section {
-      padding: 5rem 0; /* Espaçamento ajustado */
-      position: relative;
-      border-bottom: 1px solid var(--border-color);
-    }
+    .section { padding: 4rem 0; position: relative; border-bottom: 1px solid var(--border-color); }
     .section:last-child { border-bottom: none; }
-
-    /* --- Tipografia e Cabeçalhos --- */
     .section-header { text-align: center; margin-bottom: 3rem; }
-    .section-pre-title { color: var(--accent-sky-light); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.9rem; }
-    .section-title { font-size: 3rem; font-weight: 800; color: var(--text-white); margin-top: 0.25rem; }
+    .section-pre-title { color: var(--accent-sky-light); font-weight: 500; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; }
+    .section-title { font-size: 3rem; font-weight: 800; color: var(--text-white); margin-top: .25rem; }
     .text-gradient { background: linear-gradient(to right, var(--accent-sky), var(--accent-sky-light)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-
-    /* --- Seção Hero --- */
-    .hero-section { min-height: 100vh; display: flex; align-items: center; width: 100%; overflow: hidden; padding-bottom: 6rem; /* Compensa a altura do header, subindo o conteúdo */ box-sizing: border-box; }
+    .hero-section { min-height: 100vh; display: flex; align-items: center; width: 100%; overflow: hidden; padding: 0; }
     .hero-container { display: grid; grid-template-columns: 1fr; align-items: center; gap: 2rem; }
     .hero-content { text-align: center; }
-    .hero-content h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; color: var(--text-white); letter-spacing: -0.05em; margin: 0; line-height: 1.1; }
+    .hero-content h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; letter-spacing: -.05em; line-height: 1.1; }
     .hero-subtitle { font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 500; margin: 1.5rem 0; }
     .hero-description { max-width: 48rem; color: var(--text-secondary); font-size: 1.1rem; margin: 0 auto; }
     .hero-cta { margin-top: 2.5rem; }
-    .btn-primary { background: linear-gradient(45deg, var(--accent-sky), var(--accent-sky-light)); color: var(--bg-primary); font-weight: 700; font-size: 1rem; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; transition: all 0.3s ease-in-out; display: inline-block; border: none; box-shadow: 0 0 20px var(--glow-color); }
+    .btn-primary { background: linear-gradient(45deg, var(--accent-sky), var(--accent-sky-light)); color: var(--bg-primary); font-weight: 700; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; transition: all .3s ease-in-out; display: inline-block; border: none; box-shadow: 0 0 20px var(--glow-color); }
     .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 35px var(--glow-color); }
+    
+    .hero-visual-container-opt { display: none; }
+    @keyframes float-opt { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+    .floating-group { animation: float-opt 6s ease-in-out infinite; }
 
-    /* --- Animação do Hero --- */
-    .hero-visual-container { display: none; perspective: 1000px; position: relative; height: 400px; width: 100%; }
-    @keyframes rotate-globe { 0% { transform: rotateY(0deg) rotateX(10deg); } 100% { transform: rotateY(360deg) rotateX(10deg); } }
-    @keyframes float-globe { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-    .rotating-globe { width: 300px; height: 300px; position: relative; transform-style: preserve-3d; animation: rotate-globe 25s linear infinite, float-globe 8s ease-in-out infinite; }
-    .globe-surface { width: 100%; height: 100%; border-radius: 50%; position: absolute; background: radial-gradient(circle at 30% 30%, var(--accent-sky-light), var(--bg-primary) 70%); box-shadow: inset 0 0 50px rgba(0,0,0,0.5), 0 0 20px var(--glow-color); opacity: 0.3; }
-    .globe-ring { position: absolute; top: 50%; left: 50%; border: 2px solid var(--accent-sky); border-radius: 50%; opacity: 0.5; transform-style: preserve-3d; }
-    .ring-1 { width: 130%; height: 130%; margin: -65% 0 0 -65%; transform: rotateY(70deg) rotateX(10deg); animation: rotate-globe 30s linear infinite reverse; }
-    .ring-2 { width: 150%; height: 150%; margin: -75% 0 0 -75%; transform: rotateY(-60deg) rotateX(20deg); animation: rotate-globe 20s linear infinite; }
-    .ring-3 { width: 170%; height: 170%; margin: -85% 0 0 -85%; transform: rotateY(20deg) rotateX(80deg); animation: rotate-globe 35s linear infinite; }
-    .globe-sparkle { position: absolute; width: 6px; height: 6px; background: var(--accent-sky-light); border-radius: 50%; box-shadow: 0 0 10px var(--accent-sky-light); opacity: 0; animation: sparkle-animation 5s linear infinite; }
-    @keyframes sparkle-animation { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.2); } }
-    .sparkle-1 { top: 20%; left: 30%; animation-delay: 0s; } .sparkle-2 { top: 80%; left: 80%; animation-delay: 1s; } .sparkle-3 { top: 40%; left: 90%; animation-delay: 2.5s; } .sparkle-4 { top: 60%; left: 10%; animation-delay: 4s; }
-
-    /* --- Seção Sobre --- */
     .about-container { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
     .about-image-wrapper { max-width: 280px; margin: 0 auto; }
     .about-image { width: 100%; border-radius: 50%; border: 3px solid var(--border-color); padding: 5px; box-shadow: 0 0 30px var(--glow-color); }
@@ -107,51 +84,36 @@ const Styles = () => (
     .about-content p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1rem; }
     .about-content p:last-child { margin-bottom: 0; }
     .about-content span { color: var(--accent-sky-light); font-weight: 600; }
-
-    /* --- Grids --- */
     .grid-container { display: grid; gap: 2rem; }
-    
-    /* --- Card de Serviço --- */
-    .service-card { padding: 2rem; border-radius: 1.5rem; text-align: center; height: 100%; background: var(--glass-bg); border: 1px solid var(--border-color); backdrop-filter: blur(10px); transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .service-card { padding: 2rem; border-radius: 1.5rem; text-align: center; height: 100%; background: var(--glass-bg); border: 1px solid var(--border-color); backdrop-filter: blur(10px); transition: all .3s ease; }
     .service-card:hover { transform: translateY(-8px); border-color: var(--accent-sky); }
     .service-icon { margin-bottom: 1.5rem; }
     .icon { height: 2.5rem; width: 2.5rem; color: var(--accent-sky-light); margin: 0 auto; }
-    .service-card h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-white); margin-bottom: 0.75rem; }
-    .service-card p { color: var(--text-secondary); font-size: 0.95rem; }
-
-    /* --- Seção de Ferramentas --- */
+    .service-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: .75rem; }
+    .service-card p { font-size: .95rem; }
     .tools-container { display: flex; flex-direction: column; gap: 3rem; }
-    .tools-category-title { text-align: center; font-weight: 600; color: var(--text-white); font-size: 1.75rem; margin-bottom: 2.5rem; }
+    .tools-category-title { text-align: center; font-weight: 600; font-size: 1.75rem; margin-bottom: 2.5rem; }
     .tools-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2.5rem; }
-    .tool-item { display: flex; flex-direction: column; align-items: center; gap: 1rem; transition: transform 0.3s ease; }
+    .tool-item { display: flex; flex-direction: column; align-items: center; gap: 1rem; transition: transform .3s ease; }
     .tool-item:hover { transform: scale(1.1); }
     .tool-icon-wrapper { width: 4.5rem; height: 4.5rem; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; }
-    .tool-icon { width: 2.5rem; height: 2.5rem; }
-    .tool-item p { color: var(--text-secondary); font-weight: 500; transition: color 0.3s ease; margin: 0; }
+    .tool-icon { width: 2.5rem; height: 2.5rem; color: var(--text-primary); }
+    .tool-item p { font-weight: 500; transition: color .3s ease; margin: 0; }
     .tool-item:hover p { color: var(--text-white); }
-
-    /* --- Card de Depoimento --- */
-    .testimonial-card { position: relative; background-color: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border-color); }
-    
-    /* --- Media Queries --- */
+    .testimonial-card { position: relative; background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border-color); }
     @media (min-width: 768px) {
       .md-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
       .md-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
       .hero-content { text-align: left; }
       .hero-description { margin: 0; }
       .hero-container { grid-template-columns: 1fr 1fr; }
-      .hero-visual-container { display: flex; align-items: center; justify-content: center; }
+      .hero-visual-container-opt { display: flex; align-items: center; justify-content: center; }
       .about-container { grid-template-columns: 280px 1fr; gap: 3rem; }
       .about-content { text-align: left; }
     }
     @media (max-width: 768px) { .section-title { font-size: 2.25rem; } }
   `}</style>
 );
-
-// --- Ícones ---
-const WebDevIcon = () => (<svg xmlns="http://www.w.3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon"><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></svg>);
-const MobileIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></svg>);
-const AutomationIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon"><path d="M12 8V4H8" /><path d="M16.29 17.8L19 15l-2.71-2.8" /><path d="m16.29 17.8 2.71 2.8-2.71 2.8" /><path d="M10.76 9.54 15 5l-4.24-4.54" /><path d="M16 8h-4v4h4" /><path d="m5 19 3-3-3-3" /><path d="M5.29 17.8H2" /><path d="M8 12H4v4h4" /></svg>);
 
 // --- Animações ---
 const fadeIn = (direction: 'up' | 'down' | 'left' | 'right', delay: number, duration = 0.5): Variants => ({
@@ -167,6 +129,25 @@ const staggerContainer = (staggerChildren: number, delayChildren = 0): Variants 
     visible: { transition: { staggerChildren, delayChildren } },
 });
 
+// --- Componentes Memoizados para Performance ---
+const MemoizedHeroVisual = React.memo(HeroVisual);
+
+type ToolItemProps = {
+    name: string;
+    icon: React.ComponentType;
+};
+
+const ToolItem = React.memo(({ name, icon: IconComponent }: ToolItemProps) => (
+    <div className="tool-item">
+        <div className="tool-icon-wrapper">
+            <div className="tool-icon">
+                <IconComponent />
+            </div>
+        </div>
+        <p className="text-text-secondary">{name}</p>
+    </div>
+));
+
 // --- Componente Principal ---
 export default function App() {
     const services = [
@@ -181,10 +162,12 @@ export default function App() {
     ];
 
     const frontendTools = [
-        { name: 'HTML5', icon: 'https://cdn.simpleicons.org/html5/E34F26' }, { name: 'CSS3', icon: 'https://cdn.simpleicons.org/css3/1572B6' }, { name: 'JavaScript', icon: 'https://cdn.simpleicons.org/javascript/F7DF1E' }, { name: 'TypeScript', icon: 'https://cdn.simpleicons.org/typescript/3178C6' }, { name: 'React', icon: 'https://cdn.simpleicons.org/react/61DAFB' }, { name: 'Tailwind CSS', icon: 'https://cdn.simpleicons.org/tailwindcss/06B6D4' },
+        { name: 'HTML5', icon: techIcons.HTML5 }, { name: 'CSS3', icon: techIcons.CSS3 }, { name: 'JavaScript', icon: techIcons.JavaScript },
+        { name: 'TypeScript', icon: techIcons.TypeScript }, { name: 'React', icon: techIcons.React }, { name: 'TailwindCSS', icon: techIcons.TailwindCSS },
     ];
     const backendTools = [
-        { name: 'Node.js', icon: 'https://cdn.simpleicons.org/nodedotjs/339933' }, { name: 'Python', icon: 'https://cdn.simpleicons.org/python/3776AB' }, { name: 'n8n.io', icon: 'https://cdn.simpleicons.org/n8n/1AF192' }, { name: 'OpenAI', icon: 'https://cdn.simpleicons.org/openai/412991' }, { name: 'Firebase', icon: 'https://cdn.simpleicons.org/firebase/FFCA28' }, { name: 'VS Code', icon: 'https://cdn.simpleicons.org/visualstudiocode/007ACC' },
+        { name: 'Node.js', icon: techIcons['Node.js'] }, { name: 'Python', icon: techIcons.Python }, { name: 'n8n.io', icon: techIcons['n8n.io'] },
+        { name: 'OpenAI', icon: techIcons.OpenAI }, { name: 'Firebase', icon: techIcons.Firebase }, { name: 'VS Code', icon: techIcons['VS Code'] },
     ];
 
     return (
@@ -196,7 +179,7 @@ export default function App() {
                         <div className="container">
                             <div className="hero-container">
                                 <motion.div initial="hidden" animate="visible" variants={staggerContainer(0.2)} className="hero-content">
-                                    <motion.h1 variants={fadeIn('right', 0.1)}>Wuallan D'Avilla</motion.h1>
+                                    <motion.h1 variants={fadeIn('right', 0.1)} className="text-white">Wuallan D'Avilla</motion.h1>
                                     <motion.p variants={fadeIn('right', 0.2)} className="hero-subtitle text-gradient">Desenvolvedor Full Stack & Especialista em Automação</motion.p>
                                     <motion.p variants={fadeIn('right', 0.3)} className="hero-description">Transformo ideias em realidade digital com código limpo e soluções inteligentes, focado no ecossistema Web e Mobile.</motion.p>
                                     <motion.div variants={fadeIn('up', 0.4)} className="hero-cta">
@@ -204,7 +187,7 @@ export default function App() {
                                     </motion.div>
                                 </motion.div>
                                 <motion.div initial="hidden" animate="visible" variants={fadeIn('left', 0.3)}>
-                                    <HeroVisual />
+                                    <MemoizedHeroVisual />
                                 </motion.div>
                             </div>
                         </div>
@@ -221,8 +204,8 @@ export default function App() {
                                     <img src="assets/image/profile.png" alt="Foto de Wuallan D'Avilla" className="about-image" />
                                 </motion.div>
                                 <motion.div className="about-content" variants={fadeIn('left', 0.3)}>
-                                    <p>Desde os 18 anos, mergulhado no universo da programação, sou um desenvolvedor apaixonado por transformar desafios em <span>soluções eficientes</span>. Minha especialidade é construir experiências digitais completas, do front-end ao back-end.</p>
-                                    <p>Minha motivação é explorar como a tecnologia, especialmente <span>automação e IA</span>, pode otimizar processos e gerar impacto real. Estou sempre em busca de projetos inovadores para aplicar minhas habilidades e continuar crescendo.</p>
+                                    <p>Desde os 18 anos, mergulhado no universo da programação, sou um desenvolvedor apaixonado por transformar desafios em <span>soluções eficientes</span>.</p>
+                                    <p>Minha motivação é explorar como a tecnologia, especialmente <span>automação e IA</span>, pode otimizar processos e gerar impacto real. Estou sempre em busca de projetos inovadores para aplicar minhas habilidades.</p>
                                 </motion.div>
                             </div>
                         </div>
@@ -232,15 +215,15 @@ export default function App() {
                         <div className="container">
                             <motion.div variants={fadeIn('down', 0.1)} className="section-header">
                                 <p className="section-pre-title">O Que Eu Faço</p>
-                                <h2 className="section-title">Visão Geral.</h2>
+                                <h2 className="section-title text-white">Visão Geral.</h2>
                             </motion.div>
                             <div className="grid-container md-grid-cols-3">
                                 {services.map((service, index) => (
                                     <motion.div key={service.title} variants={fadeIn('up', 0.2 + index * 0.1)}>
                                         <div className="service-card">
                                             <div className="service-icon">{service.icon}</div>
-                                            <h3>{service.title}</h3>
-                                            <p>{service.description}</p>
+                                            <h3 className="text-white">{service.title}</h3>
+                                            <p className="text-secondary">{service.description}</p>
                                         </div>
                                     </motion.div>
                                 ))}
@@ -252,7 +235,7 @@ export default function App() {
                         <div className="container">
                             <motion.div variants={fadeIn('down', 0.1)} className="section-header">
                                 <p className="section-pre-title">O Que Dizem Sobre Mim</p>
-                                <h2 className="section-title">Depoimentos.</h2>
+                                <h2 className="section-title text-white">Depoimentos.</h2>
                             </motion.div>
                             <div className="grid-container md-grid-cols-2">
                                 {testimonials.map((t, index) => (
@@ -274,29 +257,19 @@ export default function App() {
                         <div className="container">
                             <motion.div variants={fadeIn('down', 0.1)} className="section-header">
                                 <p className="section-pre-title">Meu Arsenal</p>
-                                <h2 className="section-title">Tecnologias & Ferramentas.</h2>
+                                <h2 className="section-title text-white">Tecnologias & Ferramentas.</h2>
                             </motion.div>
                             <div className="tools-container">
                                 <motion.div variants={fadeIn('up', 0.2)}>
-                                    <h3 className="tools-category-title">Front-end</h3>
+                                    <h3 className="tools-category-title text-white">Front-end</h3>
                                     <div className="tools-grid">
-                                        {frontendTools.map(tool =>
-                                            <div key={tool.name} className="tool-item">
-                                                <div className="tool-icon-wrapper"><img src={tool.icon} alt={tool.name} className="tool-icon" /></div>
-                                                <p>{tool.name}</p>
-                                            </div>
-                                        )}
+                                        {frontendTools.map(tool => <ToolItem key={tool.name} name={tool.name} icon={tool.icon} />)}
                                     </div>
                                 </motion.div>
                                 <motion.div variants={fadeIn('up', 0.3)}>
-                                    <h3 className="tools-category-title">Back-end & Automação</h3>
+                                    <h3 className="tools-category-title text-white">Back-end & Automação</h3>
                                     <div className="tools-grid">
-                                        {backendTools.map(tool =>
-                                            <div key={tool.name} className="tool-item">
-                                                <div className="tool-icon-wrapper"><img src={tool.icon} alt={tool.name} className="tool-icon" /></div>
-                                                <p>{tool.name}</p>
-                                            </div>
-                                        )}
+                                        {backendTools.map(tool => <ToolItem key={tool.name} name={tool.name} icon={tool.icon} />)}
                                     </div>
                                 </motion.div>
                             </div>
@@ -307,5 +280,4 @@ export default function App() {
         </>
     );
 }
-
 
