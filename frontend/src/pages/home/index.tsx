@@ -21,7 +21,7 @@ const techIcons = {
     'VS Code': () => <svg fill="#007ACC" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.1 11.12l-8.23-8.23-1.06 1.06 7.17 7.17-7.17 7.17 1.06 1.06 8.23-8.23c.3-.3.3-.78 0-1.06zM1.96 12.88l8.23 8.23 1.06-1.06-7.17-7.17 7.17-7.17-1.06-1.06-8.23 8.23c-.3.3-.3.78 0 1.06z" /></svg>,
 };
 
-// --- Componente de Animação Otimizado ---
+// --- Componente de Animação Otimizado com Foto ---
 const HeroVisual = () => (
     <div className="hero-visual-container-opt">
         <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
@@ -30,12 +30,23 @@ const HeroVisual = () => (
                     <stop offset="0%" style={{ stopColor: 'var(--accent-sky-light)', stopOpacity: 1 }} />
                     <stop offset="100%" style={{ stopColor: 'var(--accent-sky)', stopOpacity: 1 }} />
                 </linearGradient>
+                <clipPath id="circle-clip">
+                    <circle cx="200" cy="200" r="80" />
+                </clipPath>
             </defs>
             <g className="floating-group">
-                <circle cx="200" cy="200" r="100" fill="var(--glass-bg)" stroke="url(#glowGradient)" strokeWidth="1" />
                 <circle cx="200" cy="200" r="150" fill="none" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="5 5" />
                 <path d="M 50 200 A 150 150 0 0 1 350 200" fill="none" stroke="var(--accent-sky)" strokeWidth="0.7" />
                 <path d="M 50 200 A 150 150 0 0 0 350 200" fill="none" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="2 3" />
+                <image
+                    href="assets/image/profile.png"
+                    x="120"
+                    y="120"
+                    height="160"
+                    width="160"
+                    clipPath="url(#circle-clip)"
+                />
+                <circle cx="200" cy="200" r="80" fill="none" stroke="url(#glowGradient)" strokeWidth="2" />
             </g>
         </svg>
     </div>
@@ -77,9 +88,7 @@ const Styles = () => (
     @keyframes float-opt { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
     .floating-group { animation: float-opt 6s ease-in-out infinite; }
 
-    .about-container { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
-    .about-image-wrapper { max-width: 280px; margin: 0 auto; }
-    .about-image { width: 100%; border-radius: 50%; border: 3px solid var(--border-color); padding: 5px; box-shadow: 0 0 30px var(--glow-color); }
+    .about-container { max-width: 800px; margin: 0 auto; }
     .about-content { text-align: center; }
     .about-content p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1rem; }
     .about-content p:last-child { margin-bottom: 0; }
@@ -101,6 +110,9 @@ const Styles = () => (
     .tool-item p { font-weight: 500; transition: color .3s ease; margin: 0; }
     .tool-item:hover p { color: var(--text-white); }
     .testimonial-card { position: relative; background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border-color); }
+    .testimonial-author { text-align: right; margin-top: 1rem; }
+    .author-name { font-weight: bold; }
+    .author-title { font-size: 0.9rem; color: var(--text-secondary); }
     @media (min-width: 768px) {
       .md-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
       .md-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -108,8 +120,7 @@ const Styles = () => (
       .hero-description { margin: 0; }
       .hero-container { grid-template-columns: 1fr 1fr; }
       .hero-visual-container-opt { display: flex; align-items: center; justify-content: center; }
-      .about-container { grid-template-columns: 280px 1fr; gap: 3rem; }
-      .about-content { text-align: left; }
+      .about-content { text-align: center; }
     }
     @media (max-width: 768px) { .section-title { font-size: 2.25rem; } }
   `}</style>
@@ -131,12 +142,38 @@ const staggerContainer = (staggerChildren: number, delayChildren = 0): Variants 
 
 // --- Componentes Memoizados para Performance ---
 const MemoizedHeroVisual = React.memo(HeroVisual);
+type ServiceCardProps = {
+    title: string;
+    description: string;
+    icon: React.ReactNode;
+};
+const ServiceCard = React.memo(({ title, description, icon }: ServiceCardProps) => (
+    <div className="service-card">
+        <div className="service-icon">{icon}</div>
+        <h3 className="text-white">{title}</h3>
+        <p className="text-secondary">{description}</p>
+    </div>
+));
+
+type TestimonialCardProps = {
+    quote: string;
+    name: string;
+    title: string;
+};
+const TestimonialCard = React.memo(({ quote, name, title }: TestimonialCardProps) => (
+    <div className="testimonial-card">
+        <p>"{quote}"</p>
+        <div className="testimonial-author">
+            <p className="author-name">- {name}</p>
+            <p className="author-title">{title}</p>
+        </div>
+    </div>
+));
 
 type ToolItemProps = {
     name: string;
     icon: React.ComponentType;
 };
-
 const ToolItem = React.memo(({ name, icon: IconComponent }: ToolItemProps) => (
     <div className="tool-item">
         <div className="tool-icon-wrapper">
@@ -200,10 +237,7 @@ export default function App() {
                                 <h2 className="section-title">Sobre Mim.</h2>
                             </motion.div>
                             <div className="about-container">
-                                <motion.div className="about-image-wrapper" variants={fadeIn('right', 0.2)}>
-                                    <img src="assets/image/profile.png" alt="Foto de Wuallan D'Avilla" className="about-image" />
-                                </motion.div>
-                                <motion.div className="about-content" variants={fadeIn('left', 0.3)}>
+                                <motion.div className="about-content" variants={fadeIn('up', 0.2)}>
                                     <p>Desde os 18 anos, mergulhado no universo da programação, sou um desenvolvedor apaixonado por transformar desafios em <span>soluções eficientes</span>.</p>
                                     <p>Minha motivação é explorar como a tecnologia, especialmente <span>automação e IA</span>, pode otimizar processos e gerar impacto real. Estou sempre em busca de projetos inovadores para aplicar minhas habilidades.</p>
                                 </motion.div>
@@ -220,11 +254,7 @@ export default function App() {
                             <div className="grid-container md-grid-cols-3">
                                 {services.map((service, index) => (
                                     <motion.div key={service.title} variants={fadeIn('up', 0.2 + index * 0.1)}>
-                                        <div className="service-card">
-                                            <div className="service-icon">{service.icon}</div>
-                                            <h3 className="text-white">{service.title}</h3>
-                                            <p className="text-secondary">{service.description}</p>
-                                        </div>
+                                        <ServiceCard {...service} />
                                     </motion.div>
                                 ))}
                             </div>
@@ -240,13 +270,7 @@ export default function App() {
                             <div className="grid-container md-grid-cols-2">
                                 {testimonials.map((t, index) => (
                                     <motion.div key={t.name} variants={fadeIn('up', 0.2 + index * 0.1)}>
-                                        <div className="testimonial-card">
-                                            <p>"{t.quote}"</p>
-                                            <div style={{ textAlign: 'right', marginTop: '1rem' }}>
-                                                <p style={{ fontWeight: 'bold' }}>- {t.name}</p>
-                                                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t.title}</p>
-                                            </div>
-                                        </div>
+                                        <TestimonialCard {...t} />
                                     </motion.div>
                                 ))}
                             </div>

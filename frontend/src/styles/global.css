@@ -1,0 +1,184 @@
+/* --- Fontes e Variáveis Globais --- */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+:root {
+  /* Cores */
+  --bg-primary: #030014;
+  --bg-secondary: #050816;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --text-primary: #e5e7eb;
+  --text-secondary: #aaa6c3;
+  --text-white: #ffffff;
+  --accent-sky: #38bdf8;
+  --accent-sky-light: #7dd3fc;
+  --border-color: rgba(56, 189, 248, 0.15);
+  --glow-color: rgba(56, 189, 248, 0.3);
+  --input-bg: rgba(56, 189, 248, 0.1);
+
+  /* Tipografia */
+  --font-primary: "Poppins", sans-serif;
+
+  /* Espaçamento */
+  --section-padding: 5rem 0;
+}
+
+/* --- Estilos Base e Reset --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  line-height: 1.7;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* --- Fundo Cósmico Global --- */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.cosmic-background {
+  background: linear-gradient(
+    -45deg,
+    var(--bg-primary),
+    var(--bg-secondary),
+    #020024,
+    var(--bg-primary)
+  );
+  background-size: 400% 400%;
+  animation: gradientAnimation 20s ease infinite;
+  min-height: 100vh;
+}
+
+/* --- Tipografia --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-white);
+  font-weight: 700;
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--accent-sky-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--text-white);
+}
+
+.text-gradient {
+  background: linear-gradient(
+    to right,
+    var(--accent-sky),
+    var(--accent-sky-light)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* --- Layout e Utilitários --- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section {
+  padding: var(--section-padding);
+  position: relative;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-pre-title {
+  color: var(--accent-sky-light);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-top: 0.25rem;
+}
+
+/* --- Componentes Reutilizáveis --- */
+
+/* Botão Primário */
+.btn-primary {
+  background: linear-gradient(
+    45deg,
+    var(--accent-sky),
+    var(--accent-sky-light)
+  );
+  color: var(--bg-primary);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+  border: none;
+  box-shadow: 0 0 20px var(--glow-color);
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px var(--glow-color);
+}
+
+/* Formulários */
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-family: var(--font-primary);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-sky);
+  box-shadow: 0 0 10px var(--glow-color);
+}
